@@ -63,7 +63,7 @@ func (c *Client) Store(samples model.Samples) error {
 	defer resp.Body.Close()
 	if resp.StatusCode != 200 {
 		content, _ := ioutil.ReadAll(resp.Body)
-		log.Errorf("%s", content)
+		log.Errorf("Token {%s} %s", c.writeToken, content)
 		return errors.New("Warp10 ingress errors")
 	}
 	return nil

@@ -52,6 +52,6 @@ func TestClient(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unable to parse server URL %s: %s", server.URL, err)
 	}
-	client := NewClient(serverURL.Host, token)
+	client := NewClient(serverURL.Scheme+"://"+serverURL.Host+"/api/v0/update", token)
 	client.Store(samples)
 }

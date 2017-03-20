@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"net/url"
 	"time"
+	"math"
 
 	"github.com/prometheus/common/log"
 	"github.com/prometheus/common/model"
@@ -46,7 +47,14 @@ func (c *Client) Store(samples model.Samples) error {
 				i++
 			}
 		}
-		fmt.Fprintf(buffer, "} %f\n", float64(e.Value))
+		var value float64 = float64(e.Value)
+		if  math.IsInf(value, 1) {
+			fmt.Fprintf(buffer, "} \"+Inf\"\n")
+		} else if math.IsInf(value, -1) {
+			fmt.Fprintf(buffer, "} \"-Inf\"\n")
+		} else {
+			fmt.Fprintf(buffer, "} %f\n", value)
+		}
 	}
 	req, err := http.NewRequest("POST", c.server, buffer)
 	if err != nil {

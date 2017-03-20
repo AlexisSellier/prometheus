@@ -7,6 +7,7 @@ import (
 	"net/http/httptest"
 	"net/url"
 	"testing"
+	"math"
 )
 
 func TestClient(t *testing.T) {
@@ -23,6 +24,23 @@ func TestClient(t *testing.T) {
 			Metric: model.Metric{
 				model.MetricNameLabel: "testmetric",
 				"test_label":          "test_label_value2",
+			},
+			Timestamp: model.Time(123456789123),
+			Value:     model.SampleValue(math.Inf(-1)),
+		},
+		{
+			Metric: model.Metric{
+				model.MetricNameLabel: "testmetric",
+				"test_label":          "test_label_value3",
+			},
+			Timestamp: model.Time(123456789123),
+			Value:     model.SampleValue(math.Inf(+1)),
+		},
+		
+		{
+			Metric: model.Metric{
+				model.MetricNameLabel: "testmetric",
+				"test_label":          "test_label_value4",
 			},
 			Timestamp: model.Time(123456789123),
 			Value:     5.1234,
@@ -44,7 +62,6 @@ func TestClient(t *testing.T) {
 			if err != nil {
 				t.Fatalf("Error reading body: %s", err)
 			}
-
 		},
 	))
 	defer server.Close()

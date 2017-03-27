@@ -75,8 +75,12 @@ func New(o *Options) (*Storage, error) {
 		s.queues = append(s.queues, NewStorageQueueManager(c, nil))
 	}
 	if o.Warp10Address != "" {
+		cfg := defaultConfig
+		cfg.QueueCapacity = o.StoreQueueCapacity
+		cfg.MaxSamplesPerSend = o.StoreMaxSamplesPerSend
+		cfg.Shards = o.Shards
 		c := warp10.NewClient(o.Warp10Address, o.Warp10WriteToken)
-		s.queues = append(s.queues, NewStorageQueueManager(c, nil))
+		s.queues = append(s.queues, NewStorageQueueManager(c, &defaultConfig))
 	}
 	if len(s.queues) == 0 {
 		return nil, nil
@@ -87,6 +91,9 @@ func New(o *Options) (*Storage, error) {
 // Options contains configuration parameters for a remote storage.
 type Options struct {
 	StorageTimeout          time.Duration
+	StoreQueueCapacity      int
+	StoreMaxSamplesPerSend  int
+	StoreShards             int
 	InfluxdbURL             *url.URL
 	InfluxdbRetentionPolicy string
 	InfluxdbUsername        string

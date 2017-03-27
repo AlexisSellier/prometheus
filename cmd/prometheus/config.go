@@ -226,7 +226,19 @@ func init() {
 		&cfg.remote.Warp10WriteToken, "storage.remote.warp10.write-token", "",
 		"Warp10 write token",
 	)
-
+	cfg.fs.IntVar(
+		&cfg.remote.StoreQueueCapacity, "storage.remote.queue-capacity", 100 * 1024 / 10,
+		"Remote queue capacity",
+	)
+	cfg.fs.IntVar(
+		&cfg.remote.StoreMaxSamplesPerSend, "storage.remote.max-samples", 100,
+		"Max samples per send",
+	)	
+	cfg.fs.IntVar(
+		&cfg.remote.StoreShards, "storage.remote.shards", 10,
+		"Number of shards",
+	)	
+	
 	// Alertmanager.
 	cfg.fs.Var(
 		&cfg.alertmanagerURLs, "alertmanager.url",

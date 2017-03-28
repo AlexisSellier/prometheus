@@ -80,7 +80,7 @@ func New(o *Options) (*Storage, error) {
 		cfg.MaxSamplesPerSend = o.StoreMaxSamplesPerSend
 		cfg.Shards = o.StoreShards
 		c := warp10.NewClient(o.Warp10Address, o.Warp10WriteToken)
-		s.queues = append(s.queues, NewStorageQueueManager(c, &defaultConfig))
+		s.queues = append(s.queues, NewStorageQueueManager(c, &cfg))
 	}
 	if len(s.queues) == 0 {
 		return nil, nil
